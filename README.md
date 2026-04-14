@@ -1,5 +1,7 @@
 # 🏠 Expense Tracker Bot
 
+![Home Expenses Banner](assets/banner.png)
+
 A Telegram bot for tracking shared household expenses. Register expenses, split by person, and view monthly breakdowns — all from a Telegram group chat.
 
 ## Features
