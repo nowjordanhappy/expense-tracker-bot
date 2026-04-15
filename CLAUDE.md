@@ -8,7 +8,7 @@ Telegram bot for shared household expense tracking via a group chat.
 - Python 3
 - python-telegram-bot 21.6
 - Supabase (Postgres) — database
-- Railway — hosting
+- Oracle Cloud (OCI) — hosting (Always Free, VM.Standard.E2.1.Micro)
 - python-dotenv — env vars
 
 ## Project Structure
@@ -16,8 +16,6 @@ Telegram bot for shared household expense tracking via a group chat.
 - `config.py` — env vars and app constants (CATEGORIES, CURRENCY, etc.)
 - `strings.py` — all user-facing messages (translate here for other languages)
 - `requirements.txt` — dependencies
-- `Procfile` — Railway entry point (`worker: python bot.py`)
-- `railway.toml` — Railway deploy config
 - `.env` — local secrets (never commit)
 - `.env.example` — env var template
 
@@ -79,11 +77,11 @@ venv/bin/pip install -r requirements.txt
 venv/bin/python bot.py
 ```
 
-## Deploying to Railway
-- Set all env vars in Railway dashboard
-- Railway uses `railway.toml` as deploy config
-- Uses `worker` process type (no HTTP server needed)
-- Every push to `main` triggers a redeploy
+## Deploying to OCI
+- Bot runs as a systemd service (`expense-bot.service`)
+- GitHub Actions auto-deploys on every push to `main` via SSH
+- Secrets needed: `OCI_HOST`, `OCI_SSH_KEY` (set in GitHub repo settings)
+- Service managed with: `sudo systemctl start|stop|restart expense-bot`
 
 ## Adding Messages
 All user-facing text is in `strings.py`. Edit there — do not hardcode strings in `bot.py`.

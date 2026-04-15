@@ -30,7 +30,7 @@ A Telegram bot for tracking shared household expenses. Register expenses, split 
 
 - **Python 3** + [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) v21.6
 - **Supabase** — Postgres database
-- **Railway** — hosting (worker process, no HTTP server)
+- **Oracle Cloud (OCI)** — hosting (Always Free tier, VM.Standard.E2.1.Micro)
 
 ## Project Structure
 
@@ -39,8 +39,6 @@ bot.py          # command handlers and bot logic
 config.py       # env vars and constants (categories, currency)
 strings.py      # all user-facing messages
 requirements.txt
-Procfile        # Railway entry point
-railway.toml    # Railway deploy config
 .env.example    # env var template
 ```
 
@@ -103,14 +101,70 @@ venv/bin/pip install -r requirements.txt
 venv/bin/python bot.py
 ```
 
-## Deploy to Railway
+## Deploy to OCI (Oracle Cloud Free Tier)
 
-1. Push to GitHub
-2. Create a new Railway project → Deploy from GitHub repo
-3. Add all env vars in the Railway dashboard
-4. Railway picks up `railway.toml` automatically and runs the bot as a worker
+### 1. Create an OCI instance
 
-Every `git push` to `main` triggers a redeploy.
+- Shape: `VM.Standard.E2.1.Micro` (Always Free)
+- OS: Ubuntu 20.04
+- Create a VCN with internet connectivity before creating the instance
+- Assign a public IPv4 address
+
+### 2. Set up the server
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv git -y
+git clone https://github.com/your-username/expense-tracker-bot.git
+cd expense-tracker-bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3. Create the `.env` file on the server
+
+```bash
+nano .env
+```
+
+### 4. Run as a systemd service
+
+```bash
+sudo nano /etc/systemd/system/expense-bot.service
+```
+
+```ini
+[Unit]
+Description=Expense Tracker Bot
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/expense-tracker-bot
+EnvironmentFile=/home/ubuntu/expense-tracker-bot/.env
+ExecStart=/home/ubuntu/expense-tracker-bot/venv/bin/python bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable expense-bot
+sudo systemctl start expense-bot
+```
+
+### 5. Auto-deploy with GitHub Actions
+
+Add these secrets to your GitHub repo (Settings → Secrets → Actions):
+
+- `OCI_HOST` — your instance public IP
+- `OCI_SSH_KEY` — contents of your SSH private key
+
+Every push to `main` will automatically pull and restart the bot.
 
 ## Access Control
 
@@ -136,5 +190,5 @@ To remove a user (admin only):
 
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 - [Supabase](https://supabase.com)
-- [Railway](https://railway.app)
+- [Oracle Cloud](https://www.oracle.com/cloud/free/)
 - Built with [Claude Code](https://claude.ai/code)
