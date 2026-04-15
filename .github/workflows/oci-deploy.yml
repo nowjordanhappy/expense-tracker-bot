@@ -1,0 +1,26 @@
+name: Deploy to OCI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to OCI instance
+    runs-on: ubuntu-latest
+    concurrency: deploy-group
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.OCI_HOST }}
+          username: ubuntu
+          key: ${{ secrets.OCI_SSH_KEY }}
+          script: |
+            cd ~/expense-tracker-bot/expense-tracker-bot
+            git pull origin main
+            source venv/bin/activate
+            pip install -r requirements.txt
+            sudo systemctl restart expense-bot
