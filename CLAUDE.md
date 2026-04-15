@@ -83,6 +83,37 @@ venv/bin/python bot.py
 - Secrets needed: `OCI_HOST`, `OCI_SSH_KEY` (set in GitHub repo settings)
 - Service managed with: `sudo systemctl start|stop|restart expense-bot`
 
+## Server Recovery (if instance is wiped)
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip python3-venv git -y
+git clone https://github.com/nowjordanhappy/expense-tracker-bot.git
+cd expense-tracker-bot
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+nano .env  # add BOT_TOKEN, SUPABASE_URL, SUPABASE_KEY, CURRENCY, ADMIN_ID
+sudo tee /etc/systemd/system/expense-bot.service << 'EOF'
+[Unit]
+Description=Expense Tracker Bot
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/expense-tracker-bot
+EnvironmentFile=/home/ubuntu/expense-tracker-bot/.env
+ExecStart=/home/ubuntu/expense-tracker-bot/venv/bin/python bot.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF
+sudo systemctl daemon-reload
+sudo systemctl enable expense-bot
+sudo systemctl start expense-bot
+```
+
 ## Adding Messages
 All user-facing text is in `strings.py`. Edit there — do not hardcode strings in `bot.py`.
 
