@@ -4,6 +4,8 @@
 
 A Telegram bot for tracking shared household expenses. Register expenses, split by person, and view monthly breakdowns — all from a Telegram group chat.
 
+> Runs entirely on free tiers — Supabase (database) and Oracle Cloud (hosting). No monthly costs.
+
 ## Features
 
 - Register expenses with a quick one-liner or a guided step-by-step flow
