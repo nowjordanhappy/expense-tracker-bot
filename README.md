@@ -12,6 +12,16 @@ A Telegram bot for tracking shared household expenses. Register expenses, split 
 - Access control — only authorized users can use the bot
 - Admin commands to add/remove users
 
+## Demo
+
+**Desktop**
+
+<img src="assets/demo-desktop.gif" width="600"/>
+
+**Mobile**
+
+<img src="assets/desktop-mobile.gif" width="300"/>
+
 ## Getting Started
 
 1. Add the bot to a Telegram group chat
