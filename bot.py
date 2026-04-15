@@ -206,7 +206,7 @@ async def list_expenses(update: Update, context: ContextTypes.DEFAULT_TYPE):
         cat = f" · {e['category']}" if e.get("category") else ""
         lines.append(f"• {config.CURRENCY}{e['amount']:.2f} — {e['description']} · @{e['paid_by']}{cat}")
 
-    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    await update.message.reply_text("\n".join(lines))
 
 
 async def total(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -286,7 +286,7 @@ async def summary(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for user, amount in sorted(totals.items(), key=lambda x: x[1], reverse=True):
         lines.append(f"@{user} → {config.CURRENCY}{amount:.2f}")
 
-    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    await update.message.reply_text("\n".join(lines))
 
 
 async def categories_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -317,7 +317,7 @@ async def categories_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         label = cat_labels.get(cat, cat)
         lines.append(f"{label} → {config.CURRENCY}{amount:.2f}")
 
-    await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
+    await update.message.reply_text("\n".join(lines))
 
 
 async def adduser(update: Update, context: ContextTypes.DEFAULT_TYPE):
