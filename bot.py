@@ -370,6 +370,10 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(strings.HELP_TEXT, parse_mode="Markdown")
 
 
+async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
+    print(f"Error: {context.error}")
+
+
 def main():
     app = Application.builder().token(config.BOT_TOKEN).build()
 
@@ -394,6 +398,7 @@ def main():
     app.add_handler(CommandHandler("summary", summary))
     app.add_handler(CommandHandler("categories", categories_cmd))
     app.add_handler(CommandHandler("help", help_cmd))
+    app.add_error_handler(error_handler)
 
     print("Bot running...")
     app.run_polling()
