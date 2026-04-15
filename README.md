@@ -19,6 +19,8 @@ A Telegram bot for tracking shared household expenses. Register expenses, split 
 3. Admin runs `/adduser @username <telegram_id>` for each member
 4. Start tracking expenses with `/add`
 
+> **Note**: In a group chat, when using the step-by-step `/add` flow you must **reply** to the bot's messages. In a private chat with the bot, just type your answer normally.
+
 > To find your Telegram ID: open [@userinfobot](https://t.me/userinfobot) and send any message — it replies with your user ID instantly.
 
 ## Commands
@@ -33,6 +35,7 @@ A Telegram bot for tracking shared household expenses. Register expenses, split 
 | `/mine` | My expenses this month |
 | `/summary` | Breakdown by person |
 | `/categories` | Breakdown by category |
+| `/cancel` | Cancel the current `/add` flow |
 | `/help` | Show all commands |
 
 ## Stack
