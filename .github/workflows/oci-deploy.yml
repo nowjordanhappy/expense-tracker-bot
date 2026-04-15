@@ -19,7 +19,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.OCI_SSH_KEY }}
           script: |
-            cd ~/expense-tracker-bot/expense-tracker-bot
+            cd ~/expense-tracker-bot
             git pull origin main
             source venv/bin/activate
             pip install -r requirements.txt
