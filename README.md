@@ -12,6 +12,15 @@ A Telegram bot for tracking shared household expenses. Register expenses, split 
 - Access control — only authorized users can use the bot
 - Admin commands to add/remove users
 
+## Getting Started
+
+1. Add the bot to a Telegram group chat
+2. Each member messages [@userinfobot](https://t.me/userinfobot) to get their Telegram user ID
+3. Admin runs `/adduser @username <telegram_id>` for each member
+4. Start tracking expenses with `/add`
+
+> To find your Telegram ID: open [@userinfobot](https://t.me/userinfobot) and send any message — it replies with your user ID instantly.
+
 ## Commands
 
 | Command | Description |
